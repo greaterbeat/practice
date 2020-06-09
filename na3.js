@@ -3,12 +3,13 @@ function test(str)
     return str.replace(/[^\d]*[+*/()-.]*[^\d]*[^\d\+\*\/\-\.\(\)]/g, '')
 }
 
-let str = '3.5 земле-копа +4 поросенка *10 рублей -- 5.5 $ /5 человек =';
+let str = '3.5 зем+л.е-копа -4 поросенка *10 рублей - 5.5 $ /5 человек =';
 let n = test(str)
 
 const applyMath = getMathHandler();
-console.log(n);
+
 console.log('Задана строка', str);
+console.log('Строка, "очищенная" от слов', n);
 console.log('Результат счёта без eval', applyMath(n));
 console.log('Результат счёта c eval', eval(n));
 
