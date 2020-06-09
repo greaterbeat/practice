@@ -69,7 +69,7 @@ function calculateExpr(numbers, oper) {
 }
 
 function sum(a, b) {
-    let res = a + b;
+    let res = Number(a) + Number(b);
     return res;
 }
 
@@ -87,3 +87,54 @@ function div(a, b) {
     let res = a / b;
     return res;
 }
+
+/*let expr = "3.5 землекопа +4 поросенка *10 рублей - 5.5 $ /5 человек =";
+console.log(expr, calculateExpression(expr));
+
+function calculateExpression(rawString) {
+
+    let expr = rawString.replace(/[^\d\.\+\-\*\/]/g, "");
+    let chars = expr.split("");
+    let numbers = [];		//numbers array
+    let operators = [];		//operators array
+    let i = 0;
+    let lastCharIsNumber = true;
+    numbers[i] = "";
+
+    // parse the expression
+    for (let ch = 0; ch < chars.length; ch++) {
+        if (isNaN(parseInt(chars[ch])) && chars[ch] !== "." && !lastCharIsNumber) {
+            operators[i] = chars[ch];
+            i++;
+            numbers[i] = "";
+            lastCharIsNumber = true;
+        } else {
+            numbers[i] += chars[ch];
+            lastCharIsNumber = false;
+        }
+    }
+
+    // calculate the expression
+    let result = parseFloat(numbers[0]);
+    for (let op = 0; op < operators.length; op++) {
+        let num = parseFloat(numbers[op + 1]);
+        switch (operators[op]) {
+            case "+":
+                result += num;
+                break;
+            case "-":
+                result -= num;
+                break;
+            case "*":
+                result *= num;
+                break;
+            case "/":
+                result /= num;
+                break;
+            default:
+                throw "Unsupported operator!";
+        }
+    }
+
+    return result.toFixed(2);// output result with accuracy of 2 decimal places
+}*/
