@@ -1,9 +1,9 @@
 function test(str)
 {
-    return str.replace(/[^\d]*[+*/()-.]*[^\d]*[^\d\+\*\/\-\.\(\)]/g, '')
+    return str.replace(/[^\d]*[+*-/.]*[^\d]*[^\d\+\*\/\-\.]/g, '')
 }
 
-let str = '3.5 зем+л.е-копа -4 поросенка *10 рублей - 5.5 $ /5 человек =';
+let str = '(3.5 зем+л.е-копа -4) поросенка *10 рублей - 5.5 $ /5 человек =';
 let n = test(str)
 
 const applyMath = getMathHandler();
@@ -23,53 +23,19 @@ function getMathHandler() {
 
     function applyMath(math_str) {
         divByZero = false;
-        throwUnmatchedScopes(math_str);
 
-        math_str = deepRemoveScopes(math_str);
         math_str = autoCorrect(math_str);
 
         let result = parseLinearMath(math_str);
         return divByZero ? "Караул, тут делят на ноль!" : result;
     }
 
-
-    function deepRemoveScopes(str) {
-        str = autoCorrect(str);
-
-        let index = str.indexOf("(");
-        if( index === -1 ) return parseLinearMath(str);
-
-        let scope = "(";
-        let open = 1;
-
-        for( let i = index + 1; i <= 100000; i++ ) {
-            if( i === 100000 ) console.log("Кажется пошел бесконечный цикл");
-
-            scope += str[i];
-
-            if( str[i] === "(" ) {
-                open++;
-            } else if( str[i] === ")" ) {
-                open--;
-            }
-
-            if( open === 0 ) {
-                // Привет, рекурсия!
-                // Показалось проще перезапускать функцию после каждой найденной скобки.
-                // При этом учитывая и вложенные скобки scope.slice(1, -1)
-                return deepRemoveScopes( str.replace(scope, deepRemoveScopes( scope.slice(1, -1) ) ) );
-            }
-        }
-    }
-
-    function parseLinearMath(math_str) { /* уже точно нет скобок */
+    function parseLinearMath(math_str) {
         math_str = autoCorrect(math_str);
         math_str = mul_div(math_str);
         math_str = plus_minus(math_str);
 
         return math_str;
-
-        /***/
 
         function mul_div(math_str) {
             let length = (math_str.match(/\/|\*/g) || []).length;
@@ -124,15 +90,6 @@ function getMathHandler() {
                 .replace(/\)(\d)/g, ")*$1")  // Скобка и сразу число → умножение
                 .replace(/(\/|\*)\+/g, "$1") // *+ или /+ → убрать плюс
         );
-    }
-
-    function throwUnmatchedScopes(math_str) {
-        let scopes_open = (math_str.match(/\(/g) || []).length;
-        let scopes_close = (math_str.match(/\)/g) || []).length;
-
-        if (scopes_open !== scopes_close) {
-            throw new Error("Unmatched parenthesis at " + math_str);
-        }
     }
 
     function getMathFn() {
