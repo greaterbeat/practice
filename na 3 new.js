@@ -1,4 +1,4 @@
-let str = "33 коровы - 38 попугаев / 5 раз =";
+let str = "3.5 землекопа +4 поросенка *10 рублей - 5.5 $ /5 человек =";
 
 console.log('Задана строка', str);
 calculate(str);
@@ -8,11 +8,11 @@ function calculate(str){
     console.log('Строка, "очищенная" от слов', math_str);
     let char = math_str.split("");
     let numbers = [];
-    let operators = [];
+    let oper = [];
 
-    parseExpr(char, numbers, operators);
+    parseExpr(char, numbers, oper);
 
-    let result = calculateExpr(numbers, operators);
+    let result = calculateExpr(numbers, oper);
     console.log(str,result);
 }
 
@@ -20,48 +20,47 @@ function ClearOfLetters(str){
     return(str.replace(/[^\d\.\+\-\*\/]/g, ""));
 }
 
-function parseExpr(char, numbers, operators){
+function parseExpr(char, numbers, oper){
     let lastCharIsNumber = true;
     let cnt = 0;
     numbers[cnt] = "";
 
     for(let i = 0; i < char.length; i++){
 
-        if(isNaN(parseInt(char[i])) && char[i] !== "." && !lastCharIsNumber){
-            operators[cnt] = char[i];
+        if(isNaN(parseInt(char[i])) && char[i] !== "." && !lastCharIsNumber) {
+            oper[cnt] = char[i];
             cnt++;
             numbers[cnt] = "";
             lastCharIsNumber = true;
-        } else {
+        }
+        else {
             numbers[cnt] += char[i];
             lastCharIsNumber = false;
         }
     }
 
-    return (operators, numbers);
+    return (oper, numbers);
 }
 
-function calculateExpr(numbers, operators) {
+function calculateExpr(numbers, oper) {
     let result = parseFloat(numbers[0]);
 
-    for(let i = 0; i < operators.length; i++){
+    for(let i = 0; i < oper.length; i++){
 
-        let n = parseFloat(numbers[i+1]);
-
-        if (operators[i] == "+"){
-            result = sum(result, n);
+        if (oper[i] == "+"){
+            result = sum(result, numbers[i+1]);
         }
 
-        if (operators[i] == "-"){
-            result = sub(result, n);
+        if (oper[i] == "-"){
+            result = sub(result, numbers[i+1]);
         }
 
-        if (operators[i] == "*"){
-            result = mlt(result, n);
+        if (oper[i] == "*"){
+            result = mlt(result, numbers[i+1]);
         }
 
-        if (operators[i] == "/"){
-            result = div(result, n);
+        if (oper[i] == "/"){
+            result = div(result, numbers[i+1]);
         }
 
     }
