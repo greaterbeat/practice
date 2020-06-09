@@ -27,7 +27,7 @@ function getMathHandler() {
         math_str = autoCorrect(math_str);
 
         let result = parseLinearMath(math_str);
-        return divByZero ? "Караул, тут делят на ноль!" : result;
+        return divByZero ? "Деление на 0!" : result;
     }
 
     function parseLinearMath(math_str) {
